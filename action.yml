@@ -84,15 +84,7 @@ runs:
       shell: bash
       run: |
         TAGS=(${{ steps.meta.outputs.tags }})
-        echo "all - $TAGS"
-        echo "the 0 - ${TAGS[0]}"
-        echo "the 1 - ${TAGS[1]}"
-        echo "replaced - ${TAGS[0]%%:*}"  # Take the first element and strip everything after ':
-        echo $DOCKER_METADATA_OUTPUT_TAGS
-        NAME=$(echo "$DOCKER_METADATA_OUTPUT_TAGS" | awk '{print $1}' | cut -d':' -f1)
-        echo $NAME
-        echo "name=$NAME" >> "$GITHUB_OUTPUT"
-        exit 1
+        echo "name=${TAGS[0]%%:*}" >> "$GITHUB_OUTPUT"
 
     - name: "Build Docker image"
       uses: docker/build-push-action@v6
@@ -102,14 +94,14 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
-        cache-from: type=registry,ref=${{ steps.meta.outputs.tags }}:buildcache
-        cache-to: type=registry,ref=${{ steps.meta.outputs.tags }}:buildcache,mode=max
+        cache-from: type=registry,ref=${{ steps.image.outputs.name }}:buildcache
+        cache-to: type=registry,ref=${{ steps.image.outputs.name }}:buildcache,mode=max
 
     - name: "Run vulnerability analysis"
       uses: phorus-group/vulnerability-analysis-action@main
       with:
         scan-type: image
-        scan-ref: ${{ inputs.image }}:${{ steps.meta.outputs.version }}
+        scan-ref: ${{ steps.image.outputs.name }}:${{ steps.meta.outputs.version }}
 
     - name: "Push Docker image"
       if: ${{ inputs.push == 'true' }}
@@ -119,8 +111,8 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
-        cache-from: type=registry,ref=${{ inputs.registry }}/${{ inputs.image }}:buildcache
-        cache-to: type=registry,ref=${{ inputs.registry }}/${{ inputs.image }}:buildcache,mode=max
+        cache-from: type=registry,ref=${{ steps.image.outputs.name }}:buildcache
+        cache-to: type=registry,ref=${{ steps.image.outputs.name }}:buildcache,mode=max
         provenance: mode=max
         sbom: true
         push: true
