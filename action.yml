@@ -61,6 +61,8 @@ runs:
         rm -f Dockerfile
         mv .dockerfiles-repository/${{ inputs.dockerfile-path || inputs.dockerfile-template-path }} Dockerfile
         rm -rf .dockerfiles-repository
+        echo ${{ github.event.repository.full_name }}
+        exit 1
 
     - name: "Set up QEMU"
       uses: docker/setup-qemu-action@v3
