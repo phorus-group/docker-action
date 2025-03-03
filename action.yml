@@ -76,20 +76,18 @@ runs:
       with:
         images: ${{ inputs.registry }}/${{ inputs.image }}
         tags: |
-          type=sha,prefix=,suffix=,format=short
           type=raw,value=latest
+          type=sha,prefix=,suffix=,format=short
 
     - name: "Process image name"
       id: image
       shell: bash
       run: |
         TAGS=(${{ steps.meta.outputs.tags }})
-        VERSIONS=(${{ steps.meta.outputs.version }})
-        echo "1 - ${VERSIONS[0]}"
-        echo "2 - ${VERSIONS[1]}"
-        echo "TMPP"
-        echo "${{ steps.image.outputs.name }}:${{ steps.meta.outputs.version }}"
+        echo "0 - ${TAGS[0]}"
+        echo "1 - ${TAGS[1]}"
         exit 1
+        echo "image=${TAGS[0]}" >> "$GITHUB_OUTPUT"
         echo "name=${TAGS[0]%%:*}" >> "$GITHUB_OUTPUT"
 
     - name: "Build Docker image"
