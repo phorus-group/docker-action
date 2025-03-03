@@ -59,6 +59,8 @@ runs:
       shell: bash
       run: |
         rm -f Dockerfile
+        ls -a
+        ls -a .dockerfiles-repository
         mv .dockerfiles-repository/${{ inputs.dockerfile-path || inputs.dockerfile-template-path }} Dockerfile
         rm -rf .dockerfiles-repository
 
