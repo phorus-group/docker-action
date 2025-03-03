@@ -83,6 +83,10 @@ runs:
       id: image
       shell: bash
       run: |
+        TAGS=(${{ steps.meta.outputs.tags }})
+        echo $TAGS
+        TAG="${TAGS[0]%%:*}"  # Take the first element and strip everything after ':
+        echo $TAG
         echo $DOCKER_METADATA_OUTPUT_TAGS
         NAME=$(echo "$DOCKER_METADATA_OUTPUT_TAGS" | awk '{print $1}' | cut -d':' -f1)
         echo $NAME
