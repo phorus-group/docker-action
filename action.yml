@@ -58,7 +58,7 @@ runs:
       if: ${{ (inputs.dockerfiles-repository != '' && inputs.dockerfile-path != '') || inputs.dockerfile-template-path != '' }}
       shell: bash
       run: |
-        rm Dockerfile
+        rm -f Dockerfile
         mv .dockerfiles-repository/$${{ inputs.dockerfile-path || inputs.dockerfile-template-path }} Dockerfile
         rm -rf .dockerfiles-repository
 
