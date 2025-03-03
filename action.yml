@@ -59,7 +59,7 @@ runs:
       shell: bash
       run: |
         rm -f Dockerfile
-        mv .dockerfiles-repository/$${{ inputs.dockerfile-path || inputs.dockerfile-template-path }} Dockerfile
+        mv .dockerfiles-repository/${{ inputs.dockerfile-path || inputs.dockerfile-template-path }} Dockerfile
         rm -rf .dockerfiles-repository
 
     - name: "Set up QEMU"
