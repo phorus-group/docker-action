@@ -101,6 +101,7 @@ runs:
       if: ${{ inputs.push == 'true' }}
       uses: docker/build-push-action@v6
       with:
+        context: .
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
