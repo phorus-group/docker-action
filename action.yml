@@ -84,6 +84,9 @@ runs:
       shell: bash
       run: |
         TAGS=(${{ steps.meta.outputs.tags }})
+        VERSIONS=(${{ steps.meta.outputs.version }})
+        echo "1 - ${VERSIONS[0]}"
+        echo "2 - ${VERSIONS[1]}"
         echo "TMPP"
         echo "${{ steps.image.outputs.name }}:${{ steps.meta.outputs.version }}"
         exit 1
