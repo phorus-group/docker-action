@@ -74,10 +74,14 @@ runs:
       env:
         DOCKER_METADATA_PR_HEAD_SHA: true
       with:
-        images: ${{ inputs.image }}
+        images: ${{ inputs.registry }}/${{ inputs.image }}
         tags: |
           type=sha,prefix=,suffix=,format=short
           type=raw,value=latest,enable=${{ github.ref_name == github.event.repository.default_branch }}
+
+    - name: "Tmp
+      shell: bash
+      run: echo ${{ steps.meta.outputs.tags }}; exit 1
 
     - name: "Build Docker image"
       uses: docker/build-push-action@v6
@@ -87,8 +91,8 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
-        cache-from: type=registry,ref=${{ inputs.registry }}/${{ inputs.image }}:buildcache
-        cache-to: type=registry,ref=${{ inputs.registry }}/${{ inputs.image }}:buildcache,mode=max
+        cache-from: type=registry,ref=${{ steps.meta.outputs.tags }}:buildcache
+        cache-to: type=registry,ref=${{ steps.meta.outputs.tags }}:buildcache,mode=max
 
     - name: "Run vulnerability analysis"
       uses: phorus-group/vulnerability-analysis-action@main
