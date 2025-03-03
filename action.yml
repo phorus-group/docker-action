@@ -82,7 +82,7 @@ runs:
     - name: "Tmp"
       shell: bash
       run: |
-        echo ${{ steps.meta.outputs.tags }}
+        echo $DOCKER_METADATA_OUTPUT_TAGS
         exit 1
 
     - name: "Build Docker image"
