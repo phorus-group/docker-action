@@ -45,7 +45,7 @@ runs:
       with:
         registry: ${{ inputs.registry }}
         username: ${{ inputs.registry-user }}
-        password: ${{ steps.auth.outputs.access_token }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: "Clone Dockerfile repository"
       if: ${{ (inputs.dockerfiles-repository != '' && inputs.dockerfile-path != '') || inputs.dockerfile-template-path != '' }}
