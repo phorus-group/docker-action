@@ -85,10 +85,9 @@ runs:
       run: |
         TAGS=(${{ steps.meta.outputs.tags }})
         echo "all - $TAGS"
-        TAG="the 0 - ${TAGS[0]}"
-        TAG="the 1 - ${TAGS[1]}"
-        TAG="replaced - ${TAGS[0]%%:*}"  # Take the first element and strip everything after ':
-        echo $TAG
+        echo "the 0 - ${TAGS[0]}"
+        echo "the 1 - ${TAGS[1]}"
+        echo "replaced - ${TAGS[0]%%:*}"  # Take the first element and strip everything after ':
         echo $DOCKER_METADATA_OUTPUT_TAGS
         NAME=$(echo "$DOCKER_METADATA_OUTPUT_TAGS" | awk '{print $1}' | cut -d':' -f1)
         echo $NAME
