@@ -59,10 +59,10 @@ runs:
       shell: bash
       run: |
         rm -f Dockerfile
-        ls -a
-        ls -a .dockerfiles-repository
         mv .dockerfiles-repository/${{ inputs.dockerfile-path || inputs.dockerfile-template-path }} Dockerfile
         rm -rf .dockerfiles-repository
+        ls -la
+        cat Dockerfile
 
     - name: "Set up QEMU"
       uses: docker/setup-qemu-action@v3
