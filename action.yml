@@ -35,6 +35,10 @@ inputs:
     description: "Docker registry password"
     required: false
     default: ${{ github.token }}
+  upload-sarif:
+    description: "Upload the sarif file to the GitHub Security tab. Disable if you don't have GitHub Advanced Security"
+    required: false
+    default: "false"
 
 runs:
   using: composite
@@ -85,12 +89,9 @@ runs:
       run: |
         TAGS=(${{ steps.meta.outputs.tags }})
         echo "name=${TAGS[0]%%:*}" >> "$GITHUB_OUTPUT"
-        echo "${{ github.ref_name == github.event.repository.default_branch }}"
         if [[ "${{ github.ref_name == github.event.repository.default_branch }}" == *true* ]]; then
-          echo "image=${TAGS[1]}"
           echo "image=${TAGS[1]}" >> "$GITHUB_OUTPUT"
         else
-          echo "image=${TAGS[0]}"
           echo "image=${TAGS[0]}" >> "$GITHUB_OUTPUT"
         fi
 
@@ -110,6 +111,7 @@ runs:
       with:
         scan-type: image
         scan-ref: ${{ steps.image.outputs.image }}
+        upload-sarif: ${{ inputs.upload-sarif }}
 
     - name: "Push Docker image"
       if: ${{ inputs.push == 'true' }}
