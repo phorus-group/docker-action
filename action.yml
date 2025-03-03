@@ -83,7 +83,7 @@ runs:
       id: image
       shell: bash
       run: |
-        NAME=$(echo "$DOCKER_METADATA_OUTPUT_TAGS" | jq -r 'split(" ")[0]')
+        NAME=$(echo "$DOCKER_METADATA_OUTPUT_TAGS" | awk '{print $1}' | cut -d':' -f1)
         echo $NAME
         echo "name=$NAME" >> "$GITHUB_OUTPUT"
         exit 1
