@@ -14,7 +14,7 @@ inputs:
   image:
     description: "The image name"
     required: false
-    default: ${{ github.repository }}
+    default: ${{ github.event.repository.name }}
   push:
     description: "Whether to push the image or not. The latest tag will be pushed only from the main branch"
     required: false
@@ -61,10 +61,6 @@ runs:
         rm -f Dockerfile
         mv .dockerfiles-repository/${{ inputs.dockerfile-path || inputs.dockerfile-template-path }} Dockerfile
         rm -rf .dockerfiles-repository
-        echo ${{ github.event.pull_request.head.repo.name }}
-        echo ${{ github.event.pull_request.head.repo.full_name }}
-        echo ${{ github.event.repository.name }}
-        exit 1
 
     - name: "Set up QEMU"
       uses: docker/setup-qemu-action@v3
