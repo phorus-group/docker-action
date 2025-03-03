@@ -14,7 +14,7 @@ inputs:
   image:
     description: "The image name"
     required: false
-    default: $${{ github.repository }}
+    default: ${{ github.repository }}
   push:
     description: "Whether to push the image or not. The latest tag will be pushed only from the main branch"
     required: false
