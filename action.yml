@@ -83,10 +83,8 @@ runs:
       id: image
       shell: bash
       run: |
-        NAME=$(echo "${{ steps.meta.outputs.tags }}" | jq -r 'split(",")[0]')
-        NAMES=$(echo "$DOCKER_METADATA_OUTPUT_TAGS" | jq -r 'split(",")[0]')
+        NAME=$(echo "$DOCKER_METADATA_OUTPUT_TAGS" | jq -r 'split(",")[0]')
         echo $NAME
-        echo $NAMES
         echo "name=$NAME" >> "$GITHUB_OUTPUT"
         exit 1
 
