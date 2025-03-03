@@ -14,7 +14,7 @@ inputs:
   image:
     description: "The image name"
     required: false
-    default: ${{ github.event.repository.name }}
+    default: ${{ github.event.repository.full_name }}
   push:
     description: "Whether to push the image or not. The latest tag will be pushed only from the main branch"
     required: false
@@ -61,8 +61,6 @@ runs:
         rm -f Dockerfile
         mv .dockerfiles-repository/${{ inputs.dockerfile-path || inputs.dockerfile-template-path }} Dockerfile
         rm -rf .dockerfiles-repository
-        echo ${{ github.event.repository.full_name }}
-        exit 1
 
     - name: "Set up QEMU"
       uses: docker/setup-qemu-action@v3
@@ -89,8 +87,8 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
-        cache-from: type=registry,ref=${{ inputs.image }}:buildcache
-        cache-to: type=registry,ref=${{ inputs.image }}:buildcache,mode=max
+        cache-from: type=registry,ref=${{ inputs.registry }}/${{ inputs.image }}:buildcache
+        cache-to: type=registry,ref=${{ inputs.registry }}/${{ inputs.image }}:buildcache,mode=max
 
     - name: "Run vulnerability analysis"
       uses: phorus-group/vulnerability-analysis-action@main
@@ -106,8 +104,8 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
-        cache-from: type=registry,ref=${{ inputs.image }}:buildcache
-        cache-to: type=registry,ref=${{ inputs.image }}:buildcache,mode=max
+        cache-from: type=registry,ref=${{ inputs.registry }}/${{ inputs.image }}:buildcache
+        cache-to: type=registry,ref=${{ inputs.registry }}/${{ inputs.image }}:buildcache,mode=max
         provenance: mode=max
         sbom: true
         push: true
