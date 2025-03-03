@@ -76,14 +76,14 @@ runs:
       with:
         images: ${{ inputs.registry }}/${{ inputs.image }}
         tags: |
-          type=raw,value=latest
           type=sha,prefix=,suffix=,format=short
+          type=raw,value=latest
 
     - name: "Process image name"
       id: image
       shell: bash
       run: |
-        NAME=$(echo "$DOCKER_METADATA_OUTPUT_TAGS" | jq -r 'split(",")[0]')
+        NAME=$(echo "$DOCKER_METADATA_OUTPUT_TAGS" | jq -r 'split(" ")[0]')
         echo $NAME
         echo "name=$NAME" >> "$GITHUB_OUTPUT"
         exit 1
