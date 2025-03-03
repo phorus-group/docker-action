@@ -79,9 +79,11 @@ runs:
           type=sha,prefix=,suffix=,format=short
           type=raw,value=latest,enable=${{ github.ref_name == github.event.repository.default_branch }}
 
-    - name: "Tmp
+    - name: "Tmp"
       shell: bash
-      run: echo ${{ steps.meta.outputs.tags }}; exit 1
+      run: |
+        echo ${{ steps.meta.outputs.tags }}
+        exit 1
 
     - name: "Build Docker image"
       uses: docker/build-push-action@v6
