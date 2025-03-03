@@ -85,6 +85,8 @@ runs:
       run: |
         TAGS=(${{ steps.meta.outputs.tags }})
         echo $TAGS
+        TAG="${TAGS[0]*}"
+        TAG="${TAGS[1]*}"
         TAG="${TAGS[0]%%:*}"  # Take the first element and strip everything after ':
         echo $TAG
         echo $DOCKER_METADATA_OUTPUT_TAGS
