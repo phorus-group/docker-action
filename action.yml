@@ -84,9 +84,9 @@ runs:
       with:
         images: ${{ inputs.registry }}/${{ inputs.image }}
         tags: |
+          type=raw,value=${{ inputs.tag }},enable=${{ inputs.tag != '' }}
           type=raw,value=latest,enable=${{ github.ref_name == github.event.repository.default_branch }}
           type=sha,prefix=,suffix=,format=short
-          type=raw,value=${{ inputs.tag }},enable=${{ inputs.tag != '' }}
 
     - name: "Process image name"
       id: image
@@ -95,10 +95,10 @@ runs:
         TAGS=(${{ steps.meta.outputs.tags }})
         echo "name=${TAGS[0]%%:*}" >> "$GITHUB_OUTPUT"
         if [[ "${{ github.ref_name == github.event.repository.default_branch }}" == *true* ]]; then
-          echo "image=${TAGS[1]}" >> "$GITHUB_OUTPUT"
+          echo "image=${TAGS[-1]}" >> "$GITHUB_OUTPUT"
           echo "scan ref: ${TAGS[1]}"
         else
-          echo "image=${TAGS[0]}" >> "$GITHUB_OUTPUT"
+          echo "image=${TAGS[-2]}" >> "$GITHUB_OUTPUT"
           echo "scan ref: ${TAGS[0]}"
         fi
         exit 1
