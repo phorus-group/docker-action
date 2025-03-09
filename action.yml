@@ -3,13 +3,10 @@ description: A GitHub action to build and push a docker image from a default or 
 
 inputs:
   dockerfiles-repository:
-    description: "Repository containing the Dockerfile to use"
+    description: "Repository containing the Dockerfile to use. Needs dockefile-path input to work"
     required: false
   dockerfile-path:
-    description: "Dockerfile path inside the dockerfiles-repository. Only used if dockerfiles-repository is set"
-    required: false
-  dockerfile-template-path:
-    description: "Dockerfile template path to use. Only used when dockerfiles-repository is not set. The templates come from the dockerfiles directory in the action repository"
+    description: "Dockerfile path inside the dockerfiles-repository"
     required: false
   image:
     description: "The image name"
@@ -56,18 +53,18 @@ runs:
         password: ${{ inputs.registry-password }}
 
     - name: "Clone Dockerfile repository"
-      if: ${{ (inputs.dockerfiles-repository != '' && inputs.dockerfile-path != '') || inputs.dockerfile-template-path != '' }}
+      if: ${{ inputs.dockerfile-path != '' }}
       uses: actions/checkout@v4
       with:
         repository: ${{ inputs.dockerfiles-repository || 'phorus-group/docker-action' }}
         path: .dockerfiles-repository
 
     - name: "Set the Dockerfile"
-      if: ${{ (inputs.dockerfiles-repository != '' && inputs.dockerfile-path != '') || inputs.dockerfile-template-path != '' }}
+      if: ${{ inputs.dockerfile-path != '' }}
       shell: bash
       run: |
         rm -f Dockerfile
-        mv .dockerfiles-repository/${{ inputs.dockerfile-path || inputs.dockerfile-template-path }} Dockerfile
+        mv .dockerfiles-repository/${{ inputs.dockerfile-path }} Dockerfile
         rm -rf .dockerfiles-repository
 
     - name: "Set up QEMU"
