@@ -19,8 +19,8 @@ inputs:
     description: "Whether to push the image or not. The latest tag will be pushed only from the main branch"
     required: false
     default: "false"
-  local:
-    description: "Disable docker login and build docker image locally"
+  disable-login:
+    description: "Disable docker login"
     required: false
     default: "false"
   registry:
@@ -48,7 +48,7 @@ runs:
   using: composite
   steps:
     - name: "Login to Docker registry"
-      if: ${{ inputs.local != 'true' }}
+      if: ${{ inputs.disable-login != 'true' }}
       uses: docker/login-action@v3
       with:
         registry: ${{ inputs.registry }}
