@@ -35,6 +35,10 @@ inputs:
     description: "Docker registry password"
     required: false
     default: ${{ github.token }}
+  vulnerability-analysis:
+    description: "Run vulnerability analysis"
+    required: false
+    default: "true"
   upload-sarif:
     description: "Upload the sarif file to the GitHub Security tab. Disable if you don't have GitHub Advanced Security"
     required: false
@@ -108,6 +112,7 @@ runs:
         cache-to: type=registry,ref=${{ steps.image.outputs.name }}:buildcache,mode=max
 
     - name: "Run vulnerability analysis"
+      if: ${{ inputs.vulnerability-analysis != 'true' }}
       uses: phorus-group/vulnerability-analysis-action@main
       with:
         scan-type: image
