@@ -109,7 +109,7 @@ runs:
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
         cache-from: type=registry,ref=${{ steps.image.outputs.name }}:buildcache
-        cache-to: type=registry,ref=${{ steps.image.outputs.name }}:buildcache,mode=max
+        cache-to: type=registry,mode=max,image-manifest=true,ref=${{ steps.image.outputs.name }}:buildcache
 
     - name: "Run vulnerability analysis"
       if: ${{ inputs.vulnerability-analysis == 'true' }}
@@ -128,7 +128,7 @@ runs:
         labels: ${{ steps.meta.outputs.labels }}
         annotations: ${{ steps.meta.outputs.annotations }}
         cache-from: type=registry,ref=${{ steps.image.outputs.name }}:buildcache
-        cache-to: type=registry,mode=max,image-manifest=true,ref=${{ steps.image.outputs.name }}:buildcache,mode=max
+        cache-to: type=registry,mode=max,image-manifest=true,ref=${{ steps.image.outputs.name }}:buildcache
         provenance: mode=max
         sbom: true
         push: true
