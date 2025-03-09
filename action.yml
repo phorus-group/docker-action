@@ -39,6 +39,10 @@ inputs:
     description: "Upload the sarif file to the GitHub Security tab. Disable if you don't have GitHub Advanced Security"
     required: false
     default: "false"
+outputs:
+  image:
+    description: "Image name with an SHA tag"
+    value: ${{ steps.image.outputs.image }}
 
 runs:
   using: composite
