@@ -94,13 +94,8 @@ runs:
       run: |
         TAGS=(${{ steps.meta.outputs.tags }})
         echo "name=${TAGS[0]%%:*}" >> "$GITHUB_OUTPUT"
-        if [[ "${{ github.ref_name == github.event.repository.default_branch }}" == *true* ]]; then
-          echo "image=${TAGS[-1]}" >> "$GITHUB_OUTPUT"
-          echo "scan ref: ${TAGS[-1]}"
-        else
-          echo "image=${TAGS[-2]}" >> "$GITHUB_OUTPUT"
-          echo "scan ref: ${TAGS[-2]}"
-        fi
+        echo "image=${TAGS[-1]}" >> "$GITHUB_OUTPUT"
+        echo "scan ref: ${TAGS[-1]}"
         exit 1
 
     - name: "Build Docker image"
