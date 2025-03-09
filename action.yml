@@ -95,8 +95,6 @@ runs:
         TAGS=(${{ steps.meta.outputs.tags }})
         echo "name=${TAGS[0]%%:*}" >> "$GITHUB_OUTPUT"
         echo "image=${TAGS[-1]}" >> "$GITHUB_OUTPUT"
-        echo "scan ref: ${TAGS[-1]}"
-        exit 1
 
     - name: "Build Docker image"
       uses: docker/build-push-action@v6
