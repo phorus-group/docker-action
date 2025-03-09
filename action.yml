@@ -112,7 +112,7 @@ runs:
         cache-to: type=registry,ref=${{ steps.image.outputs.name }}:buildcache,mode=max
 
     - name: "Run vulnerability analysis"
-      if: ${{ inputs.vulnerability-analysis != 'true' }}
+      if: ${{ inputs.vulnerability-analysis == 'true' }}
       uses: phorus-group/vulnerability-analysis-action@main
       with:
         scan-type: image
