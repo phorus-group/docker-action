@@ -84,9 +84,9 @@ runs:
       with:
         images: ${{ inputs.registry }}/${{ inputs.image }}
         tags: |
-          type=raw,value=${{ inputs.tag }},enable=${{ inputs.tag != '' }}
           type=raw,value=latest,enable=${{ github.ref_name == github.event.repository.default_branch }}
           type=sha,prefix=,suffix=,format=short
+          type=raw,value=${{ inputs.tag }},enable=${{ inputs.tag != '' }}
 
     - name: "Process image name"
       id: image
@@ -99,6 +99,7 @@ runs:
         else
           echo "image=${TAGS[0]}" >> "$GITHUB_OUTPUT"
         fi
+        exit 1
 
     - name: "Build Docker image"
       uses: docker/build-push-action@v6
