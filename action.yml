@@ -12,6 +12,9 @@ inputs:
     description: "The image name"
     required: false
     default: ${{ github.event.repository.full_name }}
+  tag:
+    description: "Extra image tag"
+    required: false
   push:
     description: "Whether to push the image or not. The latest tag will be pushed only from the main branch"
     required: false
@@ -81,6 +84,7 @@ runs:
       with:
         images: ${{ inputs.registry }}/${{ inputs.image }}
         tags: |
+          type=raw,value=${{ inputs.tag }},enable=${{ inputs.tag != '' }}
           type=raw,value=latest,enable=${{ github.ref_name == github.event.repository.default_branch }}
           type=sha,prefix=,suffix=,format=short
 
