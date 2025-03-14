@@ -1,4 +1,4 @@
-FROM eclipse-temurin:22-jre-jammy
+FROM eclipse-temurin:21-jre-jammy
 
 RUN apt update -y && apt install -y curl && apt clean all
 
