@@ -1,0 +1,12 @@
+FROM eclipse-temurin:22-jre-jammy
+
+RUN apt update -y && apt install -y curl && apt clean all
+
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=90.0"
+
+WORKDIR /app
+COPY build/install/app .
+COPY build/libs ./lib
+
+EXPOSE 8080 8081
+ENTRYPOINT ["./bin/app"]
