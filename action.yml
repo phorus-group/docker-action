@@ -47,6 +47,9 @@ outputs:
   image:
     description: "Image name with an SHA tag"
     value: ${{ steps.image.outputs.image }}
+  image-tag:
+    description: "The image tag only"
+    value: ${{ steps.image.outputs.tag }}
 
 runs:
   using: composite
@@ -99,6 +102,7 @@ runs:
         TAGS=(${{ steps.meta.outputs.tags }})
         echo "name=${TAGS[0]%%:*}" >> "$GITHUB_OUTPUT"
         echo "image=${TAGS[-1]}" >> "$GITHUB_OUTPUT"
+        echo "tag=${TAGS[-1]##*:}" >> "$GITHUB_OUTPUT"
 
     - name: "Build Docker image"
       uses: docker/build-push-action@v6
